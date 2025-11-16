@@ -29,7 +29,7 @@ const upload = multer({ storage });
 
 // Serve your HTML file
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.send("server is running");
 });
 
 // Handle file upload
