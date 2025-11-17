@@ -41,6 +41,29 @@ app.post("/upload", upload.single("file"), (req, res) => {
   res.send("File uploaded successfully: " + req.file.filename);
 });
 
+// Clear all uploaded files
+app.get("/clear", (req, res) => {
+  const folder = path.join(__dirname, "uploads");
+
+  if (!fs.existsSync(folder)) {
+    return res.status(404).send("Uploads folder does not exist.");
+  }
+
+  fs.readdir(folder, (err, files) => {
+    if (err) return res.status(500).send("Failed to read uploads folder.");
+
+    files.forEach(file => {
+      const filePath = path.join(folder, file);
+      fs.unlink(filePath, err => {
+        if (err) console.error("Failed to delete file:", filePath, err);
+      });
+    });
+
+    res.send("All uploaded files have been cleared.");
+  });
+});
+
+
 // Download route
 app.get("/download/:filename", (req, res) => {
   const filePath = path.join(__dirname, "uploads", req.params.filename);
