@@ -9,6 +9,7 @@ const PORT = 8080;
 
 // Parse form fields (for custom filename)
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Ensure uploads folder exists
 if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
@@ -65,19 +66,58 @@ app.get("/clear", (req, res) => {
 
 
 // Download route
-app.get("/download/:filename", (req, res) => {
-  const filePath = path.join(__dirname, "uploads", req.params.filename);
+app.post("/download", (req, res) => {
+  const { filename, hasData, currentContent } = req.body;
+
+  const filePath = path.join(__dirname, "uploads", filename);
 
   if (fs.existsSync(filePath)) {
     try {
-      const content = fs.readFileSync(filePath, "utf8"); // read text file
-      res.json({ content }); // return as JSON
+      const contentRaw = fs.readFileSync(filePath, "utf8");
+      const existingData = JSON.parse(contentRaw); // parse existing JSON
+      console.log(`[Server] data found sending back: ${contentRaw}`);
+
+      if (hasData && currentContent && currentContent.entries) {
+        currentContent.entries.forEach(newEntry => {
+          const index = existingData.entries.findIndex(e => e.name === newEntry.name);
+          if (index !== -1) {
+            // Replace existing entry only if the new score is higher
+            if (newEntry.score > existingData.entries[index].score) {
+              console.log(`[Server] Updating score for ${newEntry.name}: ${existingData.entries[index].score} → ${newEntry.score}`);
+              existingData.entries[index] = newEntry;
+            }
+          } else {
+            // Append new entry if not found
+            console.log(`[Server] Adding new entry for ${newEntry.name} with score ${newEntry.score}`);
+            existingData.entries.push(newEntry);
+          }
+        });
+
+        // Save updated file
+        fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2), "utf8");
+        console.log(`[Server] Updated file with new/modified entries: ${filePath}`);
+      }
+
+      res.json({ content: JSON.stringify(existingData) });
     } catch (err) {
       res.status(500).json({ error: "Failed to read file" });
     }
   } else {
-    res.status(404).json({ error: "File not found" });
+    if (hasData) {
+      return saveNewFile(filePath, currentContent, res);
+    }
   }
 });
+
+function saveNewFile(filePath, content, res) {
+  try {
+    const contentToSave = JSON.stringify(content, null, 2);
+    fs.writeFileSync(filePath, contentToSave, "utf8");
+    console.log(`[Server] File created: ${filePath}`);
+    return res.status(404).json({ error: "File not found, creating a new one" });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to save new file" });
+  }
+}
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

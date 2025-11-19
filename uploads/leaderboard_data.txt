@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "name": "sdds",
+      "score": 3,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    },
+    {
+      "name": "jeremy",
+      "score": 0,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    }
+  ]
+}
