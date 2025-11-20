@@ -64,6 +64,35 @@ app.get("/clear", (req, res) => {
   });
 });
 
+app.post("/saveNewData", (req, res) => {
+  const newEntry = req.body;
+  console.log("[Server] Received new leaderboard entry:", newEntry);
+  const filePath = path.join(__dirname, "uploads", "leaderboard_data.txt");
+
+  let data = { entries: [] };
+
+  if (fs.existsSync(filePath)) {
+    const raw = fs.readFileSync(filePath, "utf8");
+    data = JSON.parse(raw);
+  }
+
+  const index = data.entries.findIndex(e => e.name === newEntry.name);
+
+  if (index !== -1) {
+    if (newEntry.score > data.entries[index].score) {
+      data.entries[index] = newEntry;
+    }
+  } else {
+    data.entries.push(newEntry);
+  }
+
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
+
+  console.log("[Server] Updated leaderboard:", data);
+
+  res.json(data);
+});
+
 
 // Download route
 app.post("/download", (req, res) => {
@@ -105,6 +134,9 @@ app.post("/download", (req, res) => {
   } else {
     if (hasData) {
       return saveNewFile(filePath, currentContent, res);
+    }else{
+      console.log("[Server] No data found, file does not exist:");
+      return res.status(404).json({ error: "Fresh data: file not found" });
     }
   }
 });
