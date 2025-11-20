@@ -76,7 +76,13 @@ app.post("/saveNewData", (req, res) => {
     data = JSON.parse(raw);
   }
 
-  const index = data.entries.findIndex(e => e.name === newEntry.name);
+  const index = data.entries.findIndex(e =>
+    e.name === newEntry.name &&
+    e.mode === newEntry.mode &&
+    e.gameQuestionType === newEntry.gameQuestionType &&
+    e.gameTypeInfinite === newEntry.gameTypeInfinite &&
+    e.gameType === newEntry.gameType
+  );
 
   if (index !== -1) {
     if (newEntry.score > data.entries[index].score) {
@@ -108,7 +114,15 @@ app.post("/download", (req, res) => {
 
       if (hasData && currentContent && currentContent.entries) {
         currentContent.entries.forEach(newEntry => {
-          const index = existingData.entries.findIndex(e => e.name === newEntry.name);
+
+          const index = existingData.entries.findIndex(e =>
+            e.name === newEntry.name &&
+            e.mode === newEntry.mode &&
+            e.gameQuestionType === newEntry.gameQuestionType &&
+            e.gameTypeInfinite === newEntry.gameTypeInfinite &&
+            e.gameType === newEntry.gameType
+          );
+
           if (index !== -1) {
             // Replace existing entry only if the new score is higher
             if (newEntry.score > existingData.entries[index].score) {
@@ -134,7 +148,7 @@ app.post("/download", (req, res) => {
   } else {
     if (hasData) {
       return saveNewFile(filePath, currentContent, res);
-    }else{
+    } else {
       console.log("[Server] No data found, file does not exist:");
       return res.status(404).json({ error: "Fresh data: file not found" });
     }

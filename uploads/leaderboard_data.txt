@@ -1,52 +1,12 @@
 {
   "entries": [
     {
-      "name": "asdw",
-      "score": 21,
+      "name": "james2",
+      "score": 9999,
       "mode": "Offline",
       "gameQuestionType": 0,
       "gameTypeInfinite": false,
-      "gameType": "Arcade"
-    },
-    {
-      "name": "nxnnx",
-      "score": 3,
-      "mode": "Offline",
-      "gameQuestionType": 0,
-      "gameTypeInfinite": false,
-      "gameType": "Arcade"
-    },
-    {
-      "name": "dasdd",
-      "score": 3,
-      "mode": "Offline",
-      "gameQuestionType": 0,
-      "gameTypeInfinite": false,
-      "gameType": "Arcade"
-    },
-    {
-      "name": "zzzzzz",
-      "score": 3,
-      "mode": "Offline",
-      "gameQuestionType": 0,
-      "gameTypeInfinite": false,
-      "gameType": "Arcade"
-    },
-    {
-      "name": "gdfg",
-      "score": 3,
-      "mode": "Offline",
-      "gameQuestionType": 0,
-      "gameTypeInfinite": false,
-      "gameType": "Arcade"
-    },
-    {
-      "name": "bbb",
-      "score": 3,
-      "mode": "Offline",
-      "gameQuestionType": 0,
-      "gameTypeInfinite": false,
-      "gameType": "Arcade"
+      "gameType": "Boss Rush"
     }
   ]
 }
