@@ -1,12 +1,52 @@
 {
   "entries": [
     {
-      "name": "james2",
-      "score": 9999,
+      "name": "1",
+      "score": 5000,
       "mode": "Offline",
       "gameQuestionType": 0,
       "gameTypeInfinite": false,
-      "gameType": "Boss Rush"
+      "gameType": "Custom"
+    },
+    {
+      "name": "5",
+      "score": 5000,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    },
+    {
+      "name": "4",
+      "score": 5000,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    },
+    {
+      "name": "3",
+      "score": 5000,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    },
+    {
+      "name": "2",
+      "score": 5000,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
+    },
+    {
+      "name": "1",
+      "score": 23,
+      "mode": "Offline",
+      "gameQuestionType": 0,
+      "gameTypeInfinite": false,
+      "gameType": "Arcade"
     }
   ]
 }

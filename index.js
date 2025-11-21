@@ -141,6 +141,10 @@ app.post("/download", (req, res) => {
         console.log(`[Server] Updated file with new/modified entries: ${filePath}`);
       }
 
+      removeTop5IfHigh(existingData, filePath, res, "Arcade", 4000);
+      removeTop5IfHigh(existingData, filePath, res, "Boss Rush", 4000);
+      removeTop5IfHigh(existingData, filePath, res, "Custom", 4000);
+
       res.json({ content: JSON.stringify(existingData) });
     } catch (err) {
       res.status(500).json({ error: "Failed to read file" });
@@ -154,6 +158,33 @@ app.post("/download", (req, res) => {
     }
   }
 });
+
+function removeTop5IfHigh(existingData, filePath, res, gameType, threshold = 4000) {
+  // Get all entries for the requested gameType
+  const entries = existingData.entries.filter(e => e.gameType === gameType);
+
+  // Sort by highest score
+  const sorted = entries.sort((a, b) => b.score - a.score);
+
+  // Take top 5
+  const top5 = sorted.slice(0, 5);
+
+  // Check if all top 5 meet threshold
+  if (top5.length === 5 && top5.every(e => e.score >= threshold)) {
+
+    // Remove all entries for that game type
+    existingData.entries = existingData.entries.filter(e => e.gameType !== gameType);
+
+    console.log(`[Server] Removed all ${gameType} entries because all top 5 scores >= ${threshold}`);
+
+    // Save updated file
+    fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2), "utf8");
+
+    // Return updated content
+    return res.json({ content: JSON.stringify(existingData) });
+  }
+}
+
 
 function saveNewFile(filePath, content, res) {
   try {
